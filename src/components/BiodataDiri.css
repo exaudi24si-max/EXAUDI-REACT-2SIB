@@ -1,0 +1,228 @@
+/* File: src/components/BiodataDiri.css */
+
+@import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Open+Sans:wght@800&display=swap');
+
+/* =========================================
+   1. BACKGROUND UTAMA (LEVEL UP!)
+   Ganti hijau solid jadi rumput CoC Bertekstur
+   ========================================= */
+.coc-screen {
+    /* Gunakan tekstur rumput. Kalau gak punya filenya, kita pakai gradasi linear berpola */
+    background-color: #38761d !important;
+    background-image: 
+        linear-gradient(45deg, #2d5e17 25%, transparent 25%), 
+        linear-gradient(-45deg, #2d5e17 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #2d5e17 75%),
+        linear-gradient(-45deg, transparent 75%, #2d5e17 75%);
+    background-size: 40px 40px;
+    background-position: 0 0, 0 20px, 20px -20px, -20px 0px;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Mulai dari atas biar ada ruang navigasi */
+    min-height: 100vh;
+    padding: 80px 20px 20px 20px; /* Padding atas besar untuk Navigasi */
+    font-family: 'Open Sans', sans-serif;
+    margin: 0;
+    overflow-x: hidden; /* Mencegah scroll horizontal saat animasi */
+}
+
+/* =========================================
+   2. JUDUL (LEBIH JELAS & ADA ANIMASI)
+   ========================================= */
+.coc-main-header {
+    font-family: 'Luckiest Guy', cursive !important;
+    color: #FFD700 !important;
+    font-size: 3rem !important; /* Sedikit lebih besar */
+    text-align: center;
+    margin-bottom: 30px !important;
+    z-index: 10;
+    -webkit-text-stroke: 2.5px #361A07;
+    text-shadow: 4px 4px 0px #361A07, 0 0 15px rgba(255, 215, 0, 0.5); /* Tambah glow */
+    
+    /* Animasi: Judul muncul dari atas */
+    animation: slideDown 0.8s ease-out;
+}
+
+/* =========================================
+   3. PAPAN UTAMA (ANIMASI MENGAMBANG)
+   ========================================= */
+.coc-board {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    background: linear-gradient(180deg, #8B5A2B 0%, #5D3716 100%) !important;
+    padding: 25px; /* Sedikit lebih lega */
+    border-radius: 25px !important;
+    border: 7px solid #361A07 !important; /* Bingkai lebih tebal */
+    box-shadow: 0 15px 0px rgba(0,0,0,0.4), 0 25px 50px rgba(0,0,0,0.7) !important;
+    
+    /* ANIMASI UTAMA: Papan mengambang pelan */
+    animation: floatingIsland 4s ease-in-out infinite;
+    transform-origin: center;
+}
+
+/* =========================================
+   4. LENCANA LEVEL (Glow & Pulse)
+   ========================================= */
+.coc-lv-badge {
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    background: linear-gradient(180deg, #0099ff 0%, #005c99 100%) !important;
+    color: white !important;
+    font-family: 'Luckiest Guy' !important;
+    padding: 12px 18px;
+    border: 4px solid white !important;
+    border-radius: 50%;
+    font-size: 1.4rem;
+    box-shadow: 0 0 15px rgba(0, 153, 255, 0.7);
+    z-index: 20;
+    
+    /* Animasi: Berdenyut pelan */
+    animation: badgePulse 2s infinite;
+}
+
+/* =========================================
+   5. FRAME FOTO (Desain Ulang + Hover Efek)
+   ========================================= */
+.coc-avatar-frame {
+    background: white !important;
+    width: 190px;
+    height: 190px;
+    margin: 10px auto 25px auto;
+    border-radius: 20px; /* Lebih membulat */
+    border: 5px solid #361A07;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.2), 0 5px 15px rgba(0,0,0,0.3);
+    
+    /* Transisi untuk efek hover */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Efek saat mouse mendekat ke frame foto */
+.coc-avatar-frame:hover {
+    transform: scale(1.05) rotate(2deg); /* Membesar & miring sedikit */
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.2), 0 10px 25px rgba(255, 215, 0, 0.5); /* Glow emas */
+}
+
+/* Memastikan foto Chief pas di tengah */
+.coc-avatar-frame img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover;
+    display: block;
+}
+
+/* =========================================
+   6. KERTAS PERKAMEN (Leher Lebih Pas)
+   ========================================= */
+.coc-parchment {
+    background-color: #F8EDC9 !important;
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAIklEQVQIW2NkQAKrVq36z8gAFWNgYGBgFBAQYGBgYOBgYAAAn4QDCRXv9mIAAAAASUVORK5CYII='); /* Tekstur kertas halus */
+    padding: 25px;
+    border-radius: 18px;
+    border: 3px solid #361A07;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.15);
+}
+
+.coc-sub-title {
+    font-family: 'Luckiest Guy' !important;
+    color: #4B2C11 !important;
+    text-align: center;
+    font-size: 1.6rem;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Styling Baris Informasi (Lebih Lega) */
+.coc-row {
+    padding: 10px 0; /* Tambah jarak */
+    border-bottom: 1px solid rgba(75, 44, 17, 0.15);
+}
+
+.coc-row:last-child {
+    border-bottom: none; /* Hapus garis di baris terakhir */
+}
+
+.coc-row * {
+    color: #4B2C11 !important;
+    font-weight: 800 !important;
+    font-size: 0.95rem !important;
+    text-align: center !important;
+    margin: 0 !important;
+    background: transparent !important;
+}
+
+/* =========================================
+   7. TOMBOL ATTACK (Efek 3D & Hover)
+   ========================================= */
+.coc-attack-btn {
+    display: block;
+    width: 100%;
+    margin-top: 25px;
+    padding: 18px; /* Lebih tebal */
+    background: linear-gradient(180deg, #81D234 0%, #4A9316 100%) !important;
+    border: none;
+    border-bottom: 8px solid #2B5709 !important; /* Lebih 3D */
+    border-radius: 18px;
+    color: white !important;
+    font-family: 'Luckiest Guy' !important;
+    font-size: 2rem;
+    text-shadow: 3px 3px #2B5709;
+    cursor: pointer;
+    
+    /* Transisi untuk efek hover */
+    transition: transform 0.1s ease, border-bottom 0.1s ease;
+}
+
+/* Efek Hover Tombol */
+.coc-attack-btn:hover {
+    background: linear-gradient
+    (180deg, #94e645 0%, #55a81a 100%) !important; /* Sedikit lebih terang */
+}
+
+/* Efek saat diklik (Empuk) */
+.coc-attack-btn:active {
+    transform: translateY(6px); /* Turun lebih banyak */
+    border-bottom: 2px solid #2B5709 !important; /* Bingkai bawah menipis */
+}
+
+/* Copyright (Lebih halus) */
+.coc-copyright {
+    color: white;
+    opacity: 0.6;
+    margin-top: 30px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+/* =========================================
+   8. DEFINISI ANIMASI (KEYFRAMES)
+   ========================================= */
+
+/* Animasi 1: Papan Mengambang (Floating Island) */
+@keyframes floatingIsland {
+    0% { transform: translateY(0px) rotate(0deg); }
+    25% { transform: translateY(-8px) rotate(0.5deg); }
+    50% { transform: translateY(0px) rotate(0deg); }
+    75% { transform: translateY(8px) rotate(-0.5deg); }
+    100% { transform: translateY(0px) rotate(0deg); }
+}
+/* Animasi 2: Judul muncul dari atas */
+@keyframes slideDown {
+    0% { transform: translateY(-100px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+}
+/* Animasi 3: Lencana Berdenyut */
+@keyframes badgePulse {
+    0% { transform: scale(1); box-shadow: 0 0 15px rgba(0, 153, 255, 0.7); }
+    50% { transform: scale(1.1); box-shadow: 0 0 25px rgba(0, 153, 255, 1); }
+    100% { transform: scale(1); box-shadow: 0 0 15px rgba(0, 153, 255, 0.7); }
+}
