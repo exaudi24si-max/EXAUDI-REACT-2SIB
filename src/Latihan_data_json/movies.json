@@ -1,0 +1,404 @@
+{
+  "movies": [
+    {
+      "id": 1,
+      "title": "The Shawshank Redemption",
+      "director": "Frank Darabont",
+      "genre": "Drama",
+      "year": 1994,
+      "rating": 9.3,
+      "available": true,
+      "poster": "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=400",
+      "studio": {
+        "name": "Columbia Pictures",
+        "country": "USA",
+        "founded": 1924
+      },
+      "details": {
+        "duration": "142 min",
+        "language": "English",
+        "budget": "$25 juta"
+      }
+    },
+    {
+      "id": 2,
+      "title": "The Godfather",
+      "director": "Francis Ford Coppola",
+      "genre": "Crime",
+      "year": 1972,
+      "rating": 9.2,
+      "available": true,
+      "poster": "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=400",
+      "studio": {
+        "name": "Paramount Pictures",
+        "country": "USA",
+        "founded": 1912
+      },
+      "details": {
+        "duration": "175 min",
+        "language": "English",
+        "budget": "$6 juta"
+      }
+    },
+    {
+      "id": 3,
+      "title": "Pulp Fiction",
+      "director": "Quentin Tarantino",
+      "genre": "Crime",
+      "year": 1994,
+      "rating": 8.9,
+      "available": false,
+      "poster": "https://images.unsplash.com/photo-1594909122849-11daa4e4d2f2?w=400",
+      "studio": {
+        "name": "Miramax",
+        "country": "USA",
+        "founded": 1979
+      },
+      "details": {
+        "duration": "154 min",
+        "language": "English",
+        "budget": "$8 juta"
+      }
+    },
+    {
+      "id": 4,
+      "title": "Forrest Gump",
+      "director": "Robert Zemeckis",
+      "genre": "Drama",
+      "year": 1994,
+      "rating": 8.8,
+      "available": true,
+      "poster": "https://images.unsplash.com/photo-1535016120720-40c6874c3b13?w=400",
+      "studio": {
+        "name": "Paramount Pictures",
+        "country": "USA",
+        "founded": 1912
+      },
+      "details": {
+        "duration": "142 min",
+        "language": "English",
+        "budget": "$55 juta"
+      }
+    },
+    {
+      "id": 5,
+      "title": "Inception",
+      "director": "Christopher Nolan",
+      "genre": "Sci-Fi",
+      "year": 2010,
+      "rating": 8.8,
+      "available": true,
+      "poster": "https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=400",
+      "studio": {
+        "name": "Warner Bros",
+        "country": "USA",
+        "founded": 1923
+      },
+      "details": {
+        "duration": "148 min",
+        "language": "English",
+        "budget": "$160 juta"
+      }
+    },
+    {
+      "id": 6,
+      "title": "The Dark Knight",
+      "director": "Christopher Nolan",
+      "genre": "Action",
+      "year": 2008,
+      "rating": 9.0,
+      "available": true,
+      "poster": "https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=400",
+      "studio": {
+        "name": "Warner Bros",
+        "country": "USA",
+        "founded": 1923
+      },
+      "details": {
+        "duration": "152 min",
+        "language": "English",
+        "budget": "$185 juta"
+      }
+    },
+    {
+      "id": 7,
+      "title": "Fight Club",
+      "director": "David Fincher",
+      "genre": "Drama",
+      "year": 1999,
+      "rating": 8.8,
+      "available": false,
+      "poster": "https://images.unsplash.com/photo-1533488765986-dfa2a9939acd?w=400",
+      "studio": {
+        "name": "20th Century Fox",
+        "country": "USA",
+        "founded": 1935
+      },
+      "details": {
+        "duration": "139 min",
+        "language": "English",
+        "budget": "$63 juta"
+      }
+    },
+    {
+      "id": 8,
+      "title": "Interstellar",
+      "director": "Christopher Nolan",
+      "genre": "Sci-Fi",
+      "year": 2014,
+      "rating": 8.6,
+      "available": true,
+      "poster": "https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=400",
+      "studio": {
+        "name": "Paramount Pictures",
+        "country": "USA",
+        "founded": 1912
+      },
+      "details": {
+        "duration": "169 min",
+        "language": "English",
+        "budget": "$165 juta"
+      }
+    },
+    {
+      "id": 9,
+      "title": "Parasite",
+      "director": "Bong Joon-ho",
+      "genre": "Thriller",
+      "year": 2019,
+      "rating": 8.5,
+      "available": true,
+      "poster": "https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?w=400",
+      "studio": {
+        "name": "CJ Entertainment",
+        "country": "Korea Selatan",
+        "founded": 1995
+      },
+      "details": {
+        "duration": "132 min",
+        "language": "Korea",
+        "budget": "$11 juta"
+      }
+    },
+    {
+      "id": 10,
+      "title": "Spirited Away",
+      "director": "Hayao Miyazaki",
+      "genre": "Animation",
+      "year": 2001,
+      "rating": 8.6,
+      "available": true,
+      "poster": "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=400",
+      "studio": {
+        "name": "Studio Ghibli",
+        "country": "Jepang",
+        "founded": 1985
+      },
+      "details": {
+        "duration": "125 min",
+        "language": "Jepang",
+        "budget": "$19 juta"
+      }
+    },
+    {
+      "id": 11,
+      "title": "The Matrix",
+      "director": "The Wachowskis",
+      "genre": "Sci-Fi",
+      "year": 1999,
+      "rating": 8.7,
+      "available": true,
+      "poster": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=400",
+      "studio": {
+        "name": "Warner Bros",
+        "country": "USA",
+        "founded": 1923
+      },
+      "details": {
+        "duration": "136 min",
+        "language": "English",
+        "budget": "$63 juta"
+      }
+    },
+    {
+      "id": 12,
+      "title": "Goodfellas",
+      "director": "Martin Scorsese",
+      "genre": "Crime",
+      "year": 1990,
+      "rating": 8.7,
+      "available": false,
+      "poster": "https://images.unsplash.com/photo-1517604931442-71053e3e2f3e?w=400",
+      "studio": {
+        "name": "Warner Bros",
+        "country": "USA",
+        "founded": 1923
+      },
+      "details": {
+        "duration": "146 min",
+        "language": "English",
+        "budget": "$25 juta"
+      }
+    },
+    {
+      "id": 13,
+      "title": "Avengers: Endgame",
+      "director": "Russo Brothers",
+      "genre": "Action",
+      "year": 2019,
+      "rating": 8.4,
+      "available": true,
+      "poster": "https://images.unsplash.com/photo-1560932687-45ce2eb0a400?w=400",
+      "studio": {
+        "name": "Marvel Studios",
+        "country": "USA",
+        "founded": 1993
+      },
+      "details": {
+        "duration": "181 min",
+        "language": "English",
+        "budget": "$356 juta"
+      }
+    },
+    {
+      "id": 14,
+      "title": "Joker",
+      "director": "Todd Phillips",
+      "genre": "Drama",
+      "year": 2019,
+      "rating": 8.4,
+      "available": true,
+      "poster": "https://images.unsplash.com/photo-1509347528160-9a9e33742cdb?w=400",
+      "studio": {
+        "name": "Warner Bros",
+        "country": "USA",
+        "founded": 1923
+      },
+      "details": {
+        "duration": "122 min",
+        "language": "English",
+        "budget": "$55 juta"
+      }
+    },
+    {
+      "id": 15,
+      "title": "Coco",
+      "director": "Lee Unkrich",
+      "genre": "Animation",
+      "year": 2017,
+      "rating": 8.4,
+      "available": true,
+      "poster": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=400",
+      "studio": {
+        "name": "Pixar",
+        "country": "USA",
+        "founded": 1986
+      },
+      "details": {
+        "duration": "105 min",
+        "language": "English",
+        "budget": "$175 juta"
+      }
+    },
+    {
+      "id": 16,
+      "title": "Dangal",
+      "director": "Nitesh Tiwari",
+      "genre": "Biografi",
+      "year": 2016,
+      "rating": 8.3,
+      "available": true,
+      "poster": "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=400",
+      "studio": {
+        "name": "Aamir Khan Productions",
+        "country": "India",
+        "founded": 1999
+      },
+      "details": {
+        "duration": "161 min",
+        "language": "Hindi",
+        "budget": "$12 juta"
+      }
+    },
+    {
+      "id": 17,
+      "title": "Your Name",
+      "director": "Makoto Shinkai",
+      "genre": "Animation",
+      "year": 2016,
+      "rating": 8.4,
+      "available": false,
+      "poster": "https://images.unsplash.com/photo-1516726817505-f5ed825624d8?w=400",
+      "studio": {
+        "name": "CoMix Wave",
+        "country": "Jepang",
+        "founded": 1998
+      },
+      "details": {
+        "duration": "106 min",
+        "language": "Jepang",
+        "budget": "$4 juta"
+      }
+    },
+    {
+      "id": 18,
+      "title": "Mad Max: Fury Road",
+      "director": "George Miller",
+      "genre": "Action",
+      "year": 2015,
+      "rating": 8.1,
+      "available": true,
+      "poster": "https://images.unsplash.com/photo-1568876694728-451bbf694b83?w=400",
+      "studio": {
+        "name": "Warner Bros",
+        "country": "Australia/USA",
+        "founded": 1923
+      },
+      "details": {
+        "duration": "120 min",
+        "language": "English",
+        "budget": "$150 juta"
+      }
+    },
+    {
+      "id": 19,
+      "title": "Get Out",
+      "director": "Jordan Peele",
+      "genre": "Horror",
+      "year": 2017,
+      "rating": 7.7,
+      "available": true,
+      "poster": "https://images.unsplash.com/photo-1509248961158-e54f6934749c?w=400",
+      "studio": {
+        "name": "Universal Pictures",
+        "country": "USA",
+        "founded": 1912
+      },
+      "details": {
+        "duration": "104 min",
+        "language": "English",
+        "budget": "$4.5 juta"
+      }
+    },
+    {
+      "id": 20,
+      "title": "La La Land",
+      "director": "Damien Chazelle",
+      "genre": "Musical",
+      "year": 2016,
+      "rating": 8.0,
+      "available": true,
+      "poster": "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=400",
+      "studio": {
+        "name": "Summit Entertainment",
+        "country": "USA",
+        "founded": 2007
+      },
+      "details": {
+        "duration": "128 min",
+        "language": "English",
+        "budget": "$30 juta"
+      }
+    }
+  ]
+}
