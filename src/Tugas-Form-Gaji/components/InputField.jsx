@@ -1,12 +1,17 @@
 // src/Tugas-Form-Gaji/components/InputField.jsx
 
-export default function InputField({ label, type, placeholder, value, onChange, error }) {
+export default function InputField({
+  label,
+  type,
+  placeholder,
+  value,
+  onChange,
+  error,
+}) {
   return (
     <div className="mb-4 text-left">
       {/* Label Input */}
-      <label className="block text-gray-700 font-semibold mb-1">
-        {label}
-      </label>
+      <label className="block text-gray-700 font-semibold mb-1">{label}</label>
 
       {/* Input Field dengan Border Merah jika ada Error */}
       <input
@@ -15,8 +20,8 @@ export default function InputField({ label, type, placeholder, value, onChange, 
         value={value}
         onChange={onChange}
         className={`w-full p-2 border rounded-md outline-none transition duration-200 focus:ring-2 ${
-          error 
-            ? "border-red-500 focus:ring-red-200 bg-red-50" 
+          error
+            ? "border-red-500 focus:ring-red-200 bg-red-50"
             : "border-gray-300 focus:ring-blue-300 bg-white"
         }`}
       />
