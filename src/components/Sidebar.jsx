@@ -1,70 +1,72 @@
 import { Link, useLocation } from "react-router-dom";
-import { FiHome, FiShoppingBag, FiUsers, FiLogOut, FiHeart, FiAlertCircle } from "react-icons/fi";
+import { FiHome, FiShoppingBag, FiUsers, FiLogOut, FiPlusCircle, FiBarChart2, FiSettings, FiGrid, FiChevronDown, FiGlobe, FiKey } from "react-icons/fi";
 
 export default function Sidebar() {
     const location = useLocation();
     
     const isActive = (path) => {
         return location.pathname === path 
-            ? "bg-white/10 text-white shadow-lg border-l-4 border-green-400" 
-            : "text-teal-100 hover:bg-white/5 hover:text-white border-l-4 border-transparent";
+            ? "bg-primary-light text-primary font-bold shadow-sm" 
+            : "text-slate-500 hover:bg-slate-50 hover:text-slate-800";
     };
 
     return (
-        <aside className="w-72 bg-gradient-to-b from-teal-900 via-teal-800 to-teal-900 text-white min-h-screen shadow-2xl flex flex-col transition-all relative overflow-hidden">
-            {/* Background decoration */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-teal-400 opacity-5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
-            
-            <div className="p-8 text-center border-b border-teal-700/30 relative z-10">
-                <div className="flex items-center justify-center gap-2 mb-2">
-                    <FiHeart className="text-green-400 text-2xl animate-pulse-slow drop-shadow-md" />
-                    <h2 className="text-2xl font-extrabold tracking-wide text-white">
-                        Apotek<span className="text-green-400">Sehat</span>
-                    </h2>
+        <aside className="w-64 bg-white text-slate-800 min-h-screen border-r border-stroke flex flex-col transition-all relative z-50">
+            <div className="py-8 px-6 flex items-center gap-3">
+                <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center shadow-sm">
+                    <FiPlusCircle size={28} className="text-primary" />
                 </div>
-                <p className="text-teal-300/80 text-[10px] font-bold tracking-[0.2em] mt-1">SISTEM MANAJEMEN</p>
+                <div>
+                    <h2 className="text-xl font-bold tracking-tight text-slate-900 leading-none">
+                        Apotek<span className="text-primary">Pro</span>
+                    </h2>
+                    <p className="text-[10px] text-slate-400 font-bold tracking-widest uppercase mt-1">Management</p>
+                </div>
             </div>
             
-            <nav className="flex-1 px-4 py-8 space-y-2 overflow-y-auto relative z-10">
-                <Link to="/" className={`flex items-center gap-3 py-3.5 px-5 rounded-xl transition-all font-medium backdrop-blur-sm ${isActive('/')}`}>
-                    <FiHome size={20} className={location.pathname === '/' ? "text-green-400" : ""} /> 
-                    <span>Dashboard</span>
+            <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+                <Link to="/" className={`flex items-center justify-between py-3 px-4 rounded-xl transition-all font-medium ${isActive('/')}`}>
+                    <div className="flex items-center gap-3">
+                        <FiGrid size={20} /> 
+                        <span>Dashboard</span>
+                    </div>
+                    <FiChevronDown size={14} className="opacity-50" />
                 </Link>
-                <Link to="/orders" className={`flex items-center gap-3 py-3.5 px-5 rounded-xl transition-all font-medium backdrop-blur-sm ${isActive('/orders')}`}>
-                    <FiShoppingBag size={20} className={location.pathname === '/orders' ? "text-green-400" : ""} /> 
-                    <span>Pesanan Obat</span>
+                
+                <Link to="/orders" className={`flex items-center gap-3 py-3 px-4 rounded-xl transition-all font-medium ${isActive('/orders')}`}>
+                    <FiShoppingBag size={20} /> 
+                    <span>Obat & Inventori</span>
                 </Link>
-                <Link to="/customers" className={`flex items-center gap-3 py-3.5 px-5 rounded-xl transition-all font-medium backdrop-blur-sm ${isActive('/customers')}`}>
-                    <FiUsers size={20} className={location.pathname === '/customers' ? "text-green-400" : ""} /> 
-                    <span>Data Pasien</span>
+                
+                <Link to="/customers" className={`flex items-center gap-3 py-3 px-4 rounded-xl transition-all font-medium ${isActive('/customers')}`}>
+                    <FiUsers size={20} /> 
+                    <span>Pasien</span>
                 </Link>
 
-                <div className="pt-4 pb-1 px-5">
-                    <p className="text-teal-400/60 text-[10px] font-bold uppercase tracking-widest">Error Pages</p>
-                </div>
-                <Link to="/error-400" className={`flex items-center gap-3 py-3.5 px-5 rounded-xl transition-all font-medium backdrop-blur-sm ${isActive('/error-400')}`}>
-                    <FiAlertCircle size={20} className={location.pathname === '/error-400' ? "text-green-400" : ""} /> 
-                    <span>Error 400</span>
+                <div className="px-4 pt-6 mb-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Aplikasi</div>
+                
+                <Link to="/sales" className={`flex items-center gap-3 py-3 px-4 rounded-xl transition-all font-medium ${isActive('/sales')}`}>
+                    <FiBarChart2 size={20} /> 
+                    <span>Penjualan</span>
                 </Link>
-                <Link to="/error-401" className={`flex items-center gap-3 py-3.5 px-5 rounded-xl transition-all font-medium backdrop-blur-sm ${isActive('/error-401')}`}>
-                    <FiAlertCircle size={20} className={location.pathname === '/error-401' ? "text-green-400" : ""} /> 
-                    <span>Error 401</span>
-                </Link>
-                <Link to="/error-403" className={`flex items-center gap-3 py-3.5 px-5 rounded-xl transition-all font-medium backdrop-blur-sm ${isActive('/error-403')}`}>
-                    <FiAlertCircle size={20} className={location.pathname === '/error-403' ? "text-green-400" : ""} /> 
-                    <span>Error 403</span>
+
+                <Link to="/auth" className={`flex items-center gap-3 py-3 px-4 rounded-xl transition-all font-medium ${isActive('/auth')}`}>
+                    <FiKey size={20} /> 
+                    <span>Autentikasi</span>
                 </Link>
             </nav>
             
-            <div className="p-5 mt-auto border-t border-teal-700/30 relative z-10">
-                <div className="bg-teal-800/50 rounded-2xl p-4 mb-4 backdrop-blur-md border border-teal-700/50 hidden lg:block">
-                    <p className="text-xs text-teal-200 mb-2">Butuh bantuan?</p>
-                    <button className="text-sm font-semibold text-white hover:text-green-300 transition-colors">Hubungi Support</button>
+            <div className="p-4 mt-auto border-t border-stroke bg-slate-50/50">
+                <div className="flex items-center gap-3 p-2 bg-white rounded-xl border border-stroke shadow-sm hover:shadow-md transition-shadow cursor-pointer group">
+                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center font-bold text-primary text-xs shrink-0 group-hover:scale-105 transition-transform">
+                        AD
+                    </div>
+                    <div className="flex-1 min-w-0">
+                        <p className="text-sm font-bold text-slate-900 truncate">Apoteker Admin</p>
+                        <p className="text-[10px] text-slate-500 truncate">admin@apotekpro.com</p>
+                    </div>
+                    <FiLogOut className="text-slate-400 hover:text-red-500 transition-colors shrink-0" size={16} />
                 </div>
-                
-                <Link to="/login" className="flex items-center justify-center gap-2 w-full py-3.5 px-4 rounded-xl bg-red-500/10 hover:bg-red-500 text-red-100 hover:text-white font-bold transition-all duration-300 group">
-                    <FiLogOut className="group-hover:-translate-x-1 transition-transform" /> Logout
-                </Link>
             </div>
         </aside>
     );
