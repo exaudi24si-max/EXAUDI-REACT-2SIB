@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import axios from "axios";
-import { BsFillExclamationDiamondFill } from "react-icons/bs";
-import { ImSpinner2 } from "react-icons/im";
+import { FiMail, FiLock, FiAlertCircle } from "react-icons/fi";
+import { FcGoogle } from "react-icons/fc";
+import { FaFacebook } from "react-icons/fa";
 
 export default function Login() {
     const navigate = useNavigate();
@@ -24,107 +24,112 @@ export default function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
-        setError(false);
+        setError("");
 
-        axios.post("https://dummyjson.com/user/login", {
-            username: dataForm.email,
-            password: dataForm.password,
-            expiresInMins: 30, // optional, from dummyjson docs
-        })
-        .then((response) => {
-            if (response.status !== 200) {
-                setError("Login gagal.");
-                return;
-            }
-            navigate("/");
-        })
-        .catch((err) => {
-            if (err.response) {
-                setError(err.response.data.message || "Terjadi kesalahan sistem.");
+        // Simulated login for now
+        setTimeout(() => {
+            if (dataForm.email === "admin" && dataForm.password === "admin") {
+                localStorage.setItem("isAuthenticated", "true");
+                navigate("/");
             } else {
-                setError(err.message || "Error tidak diketahui.");
+                setError("Invalid username or password (use admin/admin)");
             }
-        })
-        .finally(() => {
             setLoading(false);
-        });
+        }, 1500);
     };
 
-    const errorInfo = error ? (
-        <div className="bg-red-50 mb-5 p-4 text-sm font-medium text-red-600 rounded-lg flex items-center border border-red-100">
-            <BsFillExclamationDiamondFill className="text-red-500 me-3 text-xl shrink-0" />
-            {error}
-        </div>
-    ) : null;
-
-    const loadingInfo = loading ? (
-        <div className="bg-primary/5 border border-primary/10 mb-5 p-4 text-sm font-medium text-primary rounded-lg flex items-center">
-            <ImSpinner2 className="me-3 animate-spin text-primary text-xl shrink-0" />
-            Memproses otentikasi...
-        </div>
-    ) : null;
-
     return (
-        <div>
-            <div className="text-center mb-8">
-                <h2 className="text-2xl font-bold text-dark">
-                    Selamat Datang 👋
-                </h2>
-                <p className="text-slate-500 text-sm mt-1">Silakan masuk ke akun Anda</p>
+        <div className="space-y-8">
+            <div>
+                <h2 className="text-3xl font-black text-indigo-950 tracking-tighter">Login</h2>
+                <p className="text-slate-400 text-sm font-medium mt-1">Hi, Welcome back! Enter your details.</p>
             </div>
 
-            {errorInfo}
-            {loadingInfo}
+            {error && (
+                <div className="bg-rose-50 text-rose-600 p-4 rounded-2xl text-xs font-bold border border-rose-100 flex items-center gap-3 animate-shake">
+                    <FiAlertCircle size={18} />
+                    {error}
+                </div>
+            )}
 
-            <form onSubmit={handleSubmit}>
-                <div className="mb-5">
-                    <label className="block text-sm font-bold text-dark mb-2">
-                        Username
-                    </label>
-                    <input
-                        type="text"
-                        name="email"
-                        className="w-full px-4 py-3 bg-slate-50 border border-stroke rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none text-dark"
-                        placeholder="Masukkan username"
-                        value={dataForm.email}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div className="mb-6">
-                    <label className="block text-sm font-bold text-dark mb-2">
-                        Password
-                    </label>
-                    <input
-                        type="password"
-                        name="password"
-                        className="w-full px-4 py-3 bg-slate-50 border border-stroke rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none text-dark"
-                        placeholder="••••••••"
-                        value={dataForm.password}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div className="flex items-center justify-between mb-8">
-                    <div className="flex items-center">
-                        <input id="remember" type="checkbox" className="h-4 w-4 text-primary focus:ring-primary border-stroke rounded" />
-                        <label htmlFor="remember" className="ml-2 block text-sm text-slate-600 font-medium">Ingat saya</label>
-                    </div>
-                    <div className="text-sm">
-                        <Link to="/forgot" className="font-bold text-primary hover:underline">Lupa password?</Link>
+            <form onSubmit={handleSubmit} className="space-y-5">
+                <div className="space-y-2">
+                    <label className="text-xs font-black text-slate-500 uppercase tracking-widest ml-1">Email / Username</label>
+                    <div className="relative group">
+                        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <FiMail className="text-slate-300 group-focus-within:text-primary transition-colors" />
+                        </div>
+                        <input
+                            type="text"
+                            name="email"
+                            className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all text-sm font-bold"
+                            placeholder="Enter your email"
+                            value={dataForm.email}
+                            onChange={handleChange}
+                            required
+                        />
                     </div>
                 </div>
+
+                <div className="space-y-2">
+                    <div className="flex justify-between items-center px-1">
+                        <label className="text-xs font-black text-slate-500 uppercase tracking-widest">Password</label>
+                        <Link to="/forgot" className="text-xs font-bold text-primary hover:underline">Forgot password?</Link>
+                    </div>
+                    <div className="relative group">
+                        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <FiLock className="text-slate-300 group-focus-within:text-primary transition-colors" />
+                        </div>
+                        <input
+                            type="password"
+                            name="password"
+                            className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all text-sm font-bold"
+                            placeholder="••••••••"
+                            value={dataForm.password}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                </div>
+
                 <button
                     type="submit"
                     disabled={loading}
-                    className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg shadow-primary/20 transition-all disabled:opacity-70 disabled:cursor-not-allowed"
+                    className="w-full bg-primary hover:bg-indigo-700 text-white font-black py-4 rounded-2xl shadow-xl shadow-primary/20 transition-all transform active:scale-[0.98] disabled:opacity-50"
                 >
-                    {loading ? "Masuk..." : "Masuk"}
+                    {loading ? (
+                        <div className="flex items-center justify-center gap-3">
+                            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                            <span>Signing in...</span>
+                        </div>
+                    ) : "Sign in"}
                 </button>
             </form>
-            <p className="mt-8 text-center text-sm text-slate-600 font-medium">
-                Belum punya akun? <Link to="/register" className="font-bold text-primary hover:underline">Daftar sekarang</Link>
+
+            <div className="relative py-4">
+                <div className="absolute inset-0 flex items-center">
+                    <div className="w-full border-t border-slate-100"></div>
+                </div>
+                <div className="relative flex justify-center text-xs uppercase font-black text-slate-300">
+                    <span className="bg-white px-4 tracking-widest">Or login with</span>
+                </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+                <button className="flex items-center justify-center gap-3 py-3.5 border border-slate-100 rounded-2xl hover:bg-slate-50 transition-all font-bold text-sm text-slate-600 active:scale-[0.98]">
+                    <FcGoogle size={20} />
+                    <span>Google</span>
+                </button>
+                <button className="flex items-center justify-center gap-3 py-3.5 border border-slate-100 rounded-2xl hover:bg-slate-50 transition-all font-bold text-sm text-slate-600 active:scale-[0.98]">
+                    <FaFacebook className="text-blue-600" size={20} />
+                    <span>Facebook</span>
+                </button>
+            </div>
+
+            <p className="text-center text-sm font-bold text-slate-400">
+                Don't have an account? <Link to="/register" className="text-primary hover:underline">Sign up</Link>
             </p>
         </div>
     );
 }
+

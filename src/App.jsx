@@ -14,23 +14,28 @@ const Forgot = React.lazy(() => import("./pages/auth/Forgot"));
 const NotFound = React.lazy(() => import("./pages/NotFound"));
 const ErrorPage = React.lazy(() => import("./pages/ErrorPage"));
 
+import ProtectedRoute from './components/ProtectedRoute';
+
 function App() {
   return (
     <Suspense fallback={<Loading />}>
       <Routes>
-        {/* Route MainLayout */}
-        <Route element={<MainLayout />}>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/orders" element={<Orders />} />
-          <Route path="/customers" element={<Customers />} />
-          <Route path="/error-400" element={<ErrorPage code={400} />} />
-          <Route path="/error-401" element={<ErrorPage code={401} />} />
-          <Route path="/error-403" element={<ErrorPage code={403} />} />
+        {/* Protected Routes */}
+        <Route element={<ProtectedRoute />}>
+          <Route element={<MainLayout />}>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/orders" element={<Orders />} />
+            <Route path="/customers" element={<Customers />} />
+            <Route path="/error-400" element={<ErrorPage code={400} />} />
+            <Route path="/error-401" element={<ErrorPage code={401} />} />
+            <Route path="/error-403" element={<ErrorPage code={403} />} />
+          </Route>
         </Route>
 
-        {/* Route AuthLayout */}
+        {/* Public Auth Routes */}
         <Route element={<AuthLayout />}>
           <Route path="/login" element={<Login />} />
+          <Route path="/auth" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/forgot" element={<Forgot />} />
         </Route>
@@ -41,5 +46,6 @@ function App() {
     </Suspense>
   );
 }
+
 
 export default App;
