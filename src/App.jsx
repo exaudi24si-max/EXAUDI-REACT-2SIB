@@ -13,6 +13,8 @@ const Register = React.lazy(() => import("./pages/auth/Register"));
 const Forgot = React.lazy(() => import("./pages/auth/Forgot"));
 const NotFound = React.lazy(() => import("./pages/NotFound"));
 const ErrorPage = React.lazy(() => import("./pages/ErrorPage"));
+const Produk = React.lazy(() => import("./pages/Produk"));
+const ProductDetail = React.lazy(() => import("./pages/ProductDetail"));
 
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -26,6 +28,8 @@ function App() {
             <Route path="/" element={<Dashboard />} />
             <Route path="/orders" element={<Orders />} />
             <Route path="/customers" element={<Customers />} />
+            <Route path="/products" element={<Produk />} />
+            <Route path="/products/:id" element={<ProductDetail />} />
             <Route path="/error-400" element={<ErrorPage code={400} />} />
             <Route path="/error-401" element={<ErrorPage code={401} />} />
             <Route path="/error-403" element={<ErrorPage code={403} />} />

@@ -49,6 +49,9 @@ export default function Sidebar() {
                     <Link to="/orders" className="block py-2 pl-12 pr-4 text-xs font-bold text-slate-400 hover:text-slate-600 transition-all">
                         Daftar Obat
                     </Link>
+                    <Link to="/products" className={`block py-2 pl-12 pr-4 text-xs font-bold transition-all ${location.pathname === "/products" ? "text-primary" : "text-slate-400 hover:text-slate-600"}`}>
+                        Daftar Produk (Baru)
+                    </Link>
                     <Link to="/customers" className="block py-2 pl-12 pr-4 text-xs font-bold text-slate-400 hover:text-slate-600 transition-all">
                         Data Pasien
                     </Link>
