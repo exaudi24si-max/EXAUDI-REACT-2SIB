@@ -44,6 +44,13 @@ export default function Sidebar() {
                         Statistik Lanjut
                     </Link>
                 </NavItem>
+
+                <NavItem
+                  to="/components"
+                  icon={<FiGrid size={22} />}
+                  label="Komponen"
+                  active={location.pathname === "/components"}
+                />
                 
                 <NavItem to="/master" icon={<FiLayers size={22} />} label="Data Master" hasSub>
                     <Link to="/orders" className="block py-2 pl-12 pr-4 text-xs font-bold text-slate-400 hover:text-slate-600 transition-all">

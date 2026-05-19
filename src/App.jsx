@@ -15,6 +15,7 @@ const NotFound = React.lazy(() => import("./pages/NotFound"));
 const ErrorPage = React.lazy(() => import("./pages/ErrorPage"));
 const Produk = React.lazy(() => import("./pages/Produk"));
 const ProductDetail = React.lazy(() => import("./pages/ProductDetail"));
+const Components = React.lazy(() => import("./pages/Components"));
 
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -30,6 +31,7 @@ function App() {
             <Route path="/customers" element={<Customers />} />
             <Route path="/products" element={<Produk />} />
             <Route path="/products/:id" element={<ProductDetail />} />
+            <Route path="/components" element={<Components />} />
             <Route path="/error-400" element={<ErrorPage code={400} />} />
             <Route path="/error-401" element={<ErrorPage code={401} />} />
             <Route path="/error-403" element={<ErrorPage code={403} />} />
