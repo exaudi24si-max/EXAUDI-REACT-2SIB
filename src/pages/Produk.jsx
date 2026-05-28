@@ -1,20 +1,88 @@
 import React, { useState } from "react"
 import { Link } from "react-router-dom"
-import { FiSearch, FiFilter, FiPlus, FiMoreVertical, FiPackage, FiShoppingBag, FiInfo } from "react-icons/fi"
+import { FiSearch, FiPlus, FiMoreVertical, FiPackage, FiShoppingBag, FiInfo } from "react-icons/fi"
 import productsData from "../data/products.json"
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+    DialogFooter,
+} from "@/components/ui/dialog"
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
+import {
+    Tabs,
+    TabsContent,
+    TabsList,
+    TabsTrigger,
+} from "@/components/ui/tabs"
 
 export default function Produk() {
+    const [products, setProducts] = useState(productsData)
     const [searchTerm, setSearchTerm] = useState("")
     const [selectedCategory, setSelectedCategory] = useState("Semua")
+    const [activeTab, setActiveTab] = useState("all")
+    const [isDialogOpen, setIsDialogOpen] = useState(false)
+    const [newProduct, setNewProduct] = useState({
+        title: "",
+        code: "",
+        category: "Obat",
+        brand: "",
+        price: "",
+        stock: "",
+        description: "",
+        thumbnail: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?q=80&w=400&auto=format&fit=crop"
+    })
 
     const categories = ["Semua", "Obat", "Vitamin", "Alat Kesehatan", "Skincare"]
 
-    const filteredProducts = productsData.filter((item) => {
+    const filteredProducts = products.filter((item) => {
         const matchesSearch = item.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
                               item.code.toLowerCase().includes(searchTerm.toLowerCase())
+        
         const matchesCategory = selectedCategory === "Semua" || item.category === selectedCategory
-        return matchesSearch && matchesCategory
+        
+        const matchesStock = activeTab === "all" || item.stock < 20
+        
+        return matchesSearch && matchesCategory && matchesStock
     })
+
+    const handleSaveProduct = () => {
+        if (!newProduct.title || !newProduct.code || !newProduct.price || !newProduct.stock) {
+            alert("Mohon lengkapi semua field utama (Nama, Kode, Harga, Stok)!")
+            return
+        }
+
+        const productToAdd = {
+            ...newProduct,
+            id: Date.now(),
+            price: Number(newProduct.price),
+            stock: Number(newProduct.stock)
+        }
+
+        setProducts([productToAdd, ...products])
+        setIsDialogOpen(false)
+        
+        // Reset Form
+        setNewProduct({
+            title: "",
+            code: "",
+            category: "Obat",
+            brand: "",
+            price: "",
+            stock: "",
+            description: "",
+            thumbnail: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?q=80&w=400&auto=format&fit=crop"
+        })
+    }
 
     return (
         <div className="p-8 animate-fade-in">
@@ -24,10 +92,123 @@ export default function Produk() {
                     <h1 className="text-2xl font-black text-indigo-950 tracking-tight">Manajemen Inventori</h1>
                     <p className="text-slate-500 text-sm font-medium mt-1">Kelola stok obat dan alat kesehatan Anda secara efisien.</p>
                 </div>
-                <button className="flex items-center justify-center gap-2 bg-primary text-white px-6 py-3 rounded-2xl font-bold shadow-lg shadow-primary/20 hover:bg-indigo-700 transition-all active:scale-[0.98]">
-                    <FiPlus size={20} />
-                    <span>Tambah Produk</span>
-                </button>
+
+                {/* Dialog Component for adding new products */}
+                <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                    <DialogTrigger asChild>
+                        <button className="flex items-center justify-center gap-2 bg-primary text-white px-6 py-3 rounded-2xl font-bold shadow-lg shadow-primary/20 hover:bg-indigo-700 transition-all active:scale-[0.98]">
+                            <FiPlus size={20} />
+                            <span>Tambah Produk</span>
+                        </button>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-[480px] p-6 rounded-3xl bg-white border border-slate-100 shadow-2xl">
+                        <DialogHeader>
+                            <DialogTitle className="text-xl font-black text-indigo-950">Tambah Obat / Produk Baru</DialogTitle>
+                            <DialogDescription className="text-slate-500 text-sm mt-1">
+                                Lengkapi formulir di bawah ini untuk menambahkan produk baru ke inventori ApotekPro.
+                            </DialogDescription>
+                        </DialogHeader>
+                        <div className="space-y-4 my-4 text-slate-700">
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="space-y-1">
+                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Nama Produk</label>
+                                    <input 
+                                        type="text" 
+                                        placeholder="Paracetamol 500mg..." 
+                                        className="w-full px-4 py-3 bg-slate-50 border-none rounded-xl text-sm font-medium outline-none focus:ring-2 focus:ring-primary/20"
+                                        value={newProduct.title}
+                                        onChange={(e) => setNewProduct({ ...newProduct, title: e.target.value })}
+                                    />
+                                </div>
+                                <div className="space-y-1">
+                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Kode Produk</label>
+                                    <input 
+                                        type="text" 
+                                        placeholder="OBT-009..." 
+                                        className="w-full px-4 py-3 bg-slate-50 border-none rounded-xl text-sm font-medium outline-none focus:ring-2 focus:ring-primary/20"
+                                        value={newProduct.code}
+                                        onChange={(e) => setNewProduct({ ...newProduct, code: e.target.value })}
+                                    />
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="space-y-1 flex flex-col justify-end">
+                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Kategori</label>
+                                    <Select 
+                                        value={newProduct.category} 
+                                        onValueChange={(val) => setNewProduct({ ...newProduct, category: val })}
+                                    >
+                                        <SelectTrigger className="w-full bg-slate-50 border-none rounded-xl py-3 px-4 text-sm font-medium h-11 focus:ring-2 focus:ring-primary/20 outline-none text-left flex justify-between items-center">
+                                            <SelectValue placeholder="Pilih Kategori" />
+                                        </SelectTrigger>
+                                        <SelectContent className="bg-white border border-slate-100 shadow-xl rounded-xl z-50">
+                                            {["Obat", "Vitamin", "Alat Kesehatan", "Skincare"].map((cat) => (
+                                                <SelectItem key={cat} value={cat} className="text-xs font-bold text-slate-600 focus:bg-slate-50 rounded-lg">
+                                                    {cat}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                                <div className="space-y-1">
+                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Brand / Merk</label>
+                                    <input 
+                                        type="text" 
+                                        placeholder="Kimia Farma..." 
+                                        className="w-full px-4 py-3 bg-slate-50 border-none rounded-xl text-sm font-medium outline-none focus:ring-2 focus:ring-primary/20"
+                                        value={newProduct.brand}
+                                        onChange={(e) => setNewProduct({ ...newProduct, brand: e.target.value })}
+                                    />
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="space-y-1">
+                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Harga (Rp)</label>
+                                    <input 
+                                        type="number" 
+                                        placeholder="15000..." 
+                                        className="w-full px-4 py-3 bg-slate-50 border-none rounded-xl text-sm font-medium outline-none focus:ring-2 focus:ring-primary/20"
+                                        value={newProduct.price}
+                                        onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })}
+                                    />
+                                </div>
+                                <div className="space-y-1">
+                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Jumlah Stok</label>
+                                    <input 
+                                        type="number" 
+                                        placeholder="100..." 
+                                        className="w-full px-4 py-3 bg-slate-50 border-none rounded-xl text-sm font-medium outline-none focus:ring-2 focus:ring-primary/20"
+                                        value={newProduct.stock}
+                                        onChange={(e) => setNewProduct({ ...newProduct, stock: e.target.value })}
+                                    />
+                                </div>
+                            </div>
+                            <div className="space-y-1">
+                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Deskripsi</label>
+                                <textarea 
+                                    placeholder="Masukkan deskripsi singkat khasiat obat..." 
+                                    className="w-full px-4 py-3 bg-slate-50 border-none rounded-xl text-sm font-medium outline-none focus:ring-2 focus:ring-primary/20 h-20 resize-none"
+                                    value={newProduct.description}
+                                    onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })}
+                                />
+                            </div>
+                        </div>
+                        <DialogFooter className="flex gap-2">
+                            <button 
+                                onClick={() => setIsDialogOpen(false)}
+                                className="px-5 py-3 rounded-2xl bg-slate-50 hover:bg-slate-100 text-slate-500 font-bold transition-all text-xs"
+                            >
+                                Batal
+                            </button>
+                            <button 
+                                onClick={handleSaveProduct}
+                                className="px-5 py-3 rounded-2xl bg-primary hover:bg-indigo-700 text-white font-bold transition-all text-xs shadow-md shadow-primary/20"
+                            >
+                                Simpan Produk
+                            </button>
+                        </DialogFooter>
+                    </DialogContent>
+                </Dialog>
             </div>
 
             {/* Stats Overview */}
@@ -38,7 +219,7 @@ export default function Produk() {
                     </div>
                     <div>
                         <p className="text-slate-400 text-xs font-bold uppercase tracking-widest">Total Produk</p>
-                        <h3 className="text-2xl font-black text-slate-900">{productsData.length}</h3>
+                        <h3 className="text-2xl font-black text-slate-900">{products.length}</h3>
                     </div>
                 </div>
                 <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex items-center gap-5">
@@ -57,38 +238,74 @@ export default function Produk() {
                     <div>
                         <p className="text-slate-400 text-xs font-bold uppercase tracking-widest">Stok Rendah</p>
                         <h3 className="text-2xl font-black text-slate-900">
-                            {productsData.filter(p => p.stock < 20).length}
+                            {products.filter(p => p.stock < 20).length}
                         </h3>
                     </div>
                 </div>
             </div>
 
-            {/* Filters & Table */}
-            <div className="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
-                <div className="p-6 border-b border-slate-50 flex flex-col md:flex-row gap-4 items-center justify-between">
-                    <div className="relative w-full md:w-96">
-                        <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-                        <input 
-                            type="text" 
-                            placeholder="Cari nama obat atau kode..." 
-                            className="w-full pl-12 pr-4 py-3 bg-slate-50 border-none rounded-2xl text-sm font-medium focus:ring-2 focus:ring-primary/20 transition-all outline-none"
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                        />
-                    </div>
-                    <div className="flex items-center gap-2 overflow-x-auto w-full md:w-auto scrollbar-hide">
-                        {categories.map((cat) => (
-                            <button
-                                key={cat}
-                                onClick={() => setSelectedCategory(cat)}
-                                className={`px-5 py-2.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${selectedCategory === cat ? 'bg-primary text-white shadow-md shadow-primary/20' : 'bg-slate-50 text-slate-500 hover:bg-slate-100'}`}
-                            >
-                                {cat}
-                            </button>
-                        ))}
-                    </div>
-                </div>
+            {/* Main Content Area with Tabs & Filters */}
+            <div className="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden p-6">
+                <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+                    {/* Filter and Tab Controller Section */}
+                    <div className="flex flex-col xl:flex-row gap-4 xl:items-center justify-between pb-6 border-b border-slate-100 mb-6">
+                        {/* Tabs Trigger - 1st Shadcn Component */}
+                        <TabsList className="bg-slate-50 p-1.5 rounded-2xl flex w-fit h-12 border border-slate-100/50">
+                            <TabsTrigger value="all" className="px-5 py-2 font-bold text-xs transition-all duration-200">
+                                Semua Obat ({products.length})
+                            </TabsTrigger>
+                            <TabsTrigger value="critical" className="px-5 py-2 font-bold text-xs transition-all duration-200 text-slate-500 hover:text-slate-700">
+                                Stok Kritis ({products.filter(p => p.stock < 20).length})
+                            </TabsTrigger>
+                        </TabsList>
 
+                        <div className="flex flex-col md:flex-row gap-4 items-center w-full xl:w-auto">
+                            {/* Search bar */}
+                            <div className="relative w-full md:w-80">
+                                <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                                <input 
+                                    type="text" 
+                                    placeholder="Cari nama obat atau kode..." 
+                                    className="w-full pl-12 pr-4 py-3 bg-slate-50 border-none rounded-2xl text-xs font-medium focus:ring-2 focus:ring-primary/20 transition-all outline-none"
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                />
+                            </div>
+
+                            {/* Select Dropdown Filter - 2nd Shadcn Component */}
+                            <div className="flex items-center gap-3 w-full md:w-auto">
+                                <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest whitespace-nowrap">Filter Kategori:</span>
+                                <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                                    <SelectTrigger className="w-[180px] bg-slate-50 border-none rounded-2xl py-3 px-4 text-xs font-bold h-11 focus:ring-2 focus:ring-primary/20 outline-none text-left flex justify-between items-center text-slate-700">
+                                        <SelectValue placeholder="Pilih Kategori" />
+                                    </SelectTrigger>
+                                    <SelectContent className="bg-white border border-slate-100 shadow-xl rounded-xl z-50">
+                                        {categories.map((cat) => (
+                                            <SelectItem key={cat} value={cat} className="text-xs font-bold text-slate-600 focus:bg-slate-50 rounded-lg">
+                                                {cat}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Tabs Content Sections */}
+                    <TabsContent value="all" className="outline-none mt-0">
+                        {renderTable(filteredProducts)}
+                    </TabsContent>
+                    <TabsContent value="critical" className="outline-none mt-0">
+                        {renderTable(filteredProducts)}
+                    </TabsContent>
+                </Tabs>
+            </div>
+        </div>
+    )
+
+    function renderTable(list) {
+        return (
+            <>
                 <div className="overflow-x-auto">
                     <table className="w-full text-left border-collapse">
                         <thead>
@@ -102,11 +319,11 @@ export default function Produk() {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-50">
-                            {filteredProducts.map((item) => (
+                            {list.map((item) => (
                                 <tr key={item.id} className="hover:bg-slate-50/50 transition-colors group">
                                     <td className="px-6 py-4">
                                         <div className="flex items-center gap-4">
-                                            <div className="w-12 h-12 rounded-xl overflow-hidden bg-slate-100 border border-slate-200">
+                                            <div className="w-12 h-12 rounded-xl overflow-hidden bg-slate-100 border border-slate-200 shrink-0">
                                                 <img src={item.thumbnail} alt={item.title} className="w-full h-full object-cover" />
                                             </div>
                                             <div>
@@ -118,7 +335,7 @@ export default function Produk() {
                                         </div>
                                     </td>
                                     <td className="px-6 py-4">
-                                        <span className="text-xs font-bold text-slate-600 bg-slate-100 px-2 py-1 rounded-md">{item.code}</span>
+                                        <span className="text-xs font-bold text-slate-600 bg-slate-100 px-2.5 py-1 rounded-lg">{item.code}</span>
                                     </td>
                                     <td className="px-6 py-4">
                                         <span className={`text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full ${
@@ -141,7 +358,7 @@ export default function Produk() {
                                                     style={{ width: `${Math.min(item.stock, 100)}%` }}
                                                 ></div>
                                             </div>
-                                            <span className={`text-xs font-bold ${item.stock < 20 ? 'text-rose-600' : 'text-slate-600'}`}>
+                                            <span className={`text-xs font-bold ${item.stock < 20 ? 'text-rose-600 animate-pulse' : 'text-slate-600'}`}>
                                                 {item.stock}
                                             </span>
                                         </div>
@@ -157,7 +374,7 @@ export default function Produk() {
                     </table>
                 </div>
                 
-                {filteredProducts.length === 0 && (
+                {list.length === 0 && (
                     <div className="py-20 text-center">
                         <div className="w-20 h-20 bg-slate-50 text-slate-300 rounded-full flex items-center justify-center mx-auto mb-4">
                             <FiSearch size={40} />
@@ -166,7 +383,7 @@ export default function Produk() {
                         <p className="text-slate-500 text-sm">Coba kata kunci lain atau filter kategori yang berbeda.</p>
                     </div>
                 )}
-            </div>
-        </div>
-    )
+            </>
+        )
+    }
 }

@@ -11,7 +11,6 @@ export default function ProductDetail() {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        setLoading(true)
         // Menggunakan dummyjson sesuai instruksi tugas
         axios
             .get(`https://dummyjson.com/products/${id}`)
@@ -19,7 +18,7 @@ export default function ProductDetail() {
                 setProduct(response.data)
                 setLoading(false)
             })
-            .catch((err) => {
+            .catch(() => {
                 setError("Produk tidak ditemukan atau terjadi kesalahan jaringan.")
                 setLoading(false)
             })
