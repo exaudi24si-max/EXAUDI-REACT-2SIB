@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import { Link } from "react-router-dom"
 import { FiSearch, FiPlus, FiMoreVertical, FiPackage, FiShoppingBag, FiInfo } from "react-icons/fi"
 import productsData from "../data/products.json"
@@ -41,6 +41,52 @@ export default function Produk() {
         description: "",
         thumbnail: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?q=80&w=400&auto=format&fit=crop"
     })
+
+    // --- FITUR BARU UNTUK TUGAS HOOKS (Catatan Cepat) ---
+    // 1. useState: Mengelola status buka/tutup catatan dan teksnya
+    const [isNoteOpen, setIsNoteOpen] = useState(false)
+    const [noteText, setNoteText] = useState("")
+    const [timer, setTimer] = useState(0)
+
+    // 2. useRef: Mengambil referensi dari text area catatan
+    const noteAreaRef = useRef(null)
+
+    // 3. useEffect: Timer berjalan ketika catatan dibuka dan auto-focus text area
+    useEffect(() => {
+        let interval;
+        if (isNoteOpen) {
+            // Timer (menunjukkan useEffect merender efek samping secara berkala)
+            interval = setInterval(() => {
+                setTimer((prev) => prev + 1);
+            }, 1000);
+            
+            // Menggunakan useRef untuk otomatis fokus ke textarea sesaat setelah terbuka
+            setTimeout(() => {
+                if (noteAreaRef.current) {
+                    noteAreaRef.current.focus();
+                }
+            }, 100);
+        } else {
+            setTimer(0); // Reset timer jika ditutup
+        }
+
+        return () => clearInterval(interval); // Cleanup
+    }, [isNoteOpen])
+    // ----------------------------------------------------
+
+    // useRef: Digunakan untuk mengambil referensi elemen input pencarian
+    const searchInputRef = useRef(null)
+
+    // useEffect: Mengubah judul halaman dan mengatur fokus kursor
+    useEffect(() => {
+        // 1. Mengubah teks di tab browser
+        document.title = `Manajemen Inventori (${products.length} Produk) - ApotekPro`
+        
+        // 2. Menerapkan useRef untuk memfokuskan kursor secara otomatis
+        if (searchInputRef.current) {
+            searchInputRef.current.focus()
+        }
+    }, [products.length])
 
     const categories = ["Semua", "Obat", "Vitamin", "Alat Kesehatan", "Skincare"]
 
@@ -264,6 +310,7 @@ export default function Produk() {
                             <div className="relative w-full md:w-80">
                                 <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
                                 <input 
+                                    ref={searchInputRef}
                                     type="text" 
                                     placeholder="Cari nama obat atau kode..." 
                                     className="w-full pl-12 pr-4 py-3 bg-slate-50 border-none rounded-2xl text-xs font-medium focus:ring-2 focus:ring-primary/20 transition-all outline-none"
@@ -300,6 +347,36 @@ export default function Produk() {
                     </TabsContent>
                 </Tabs>
             </div>
+
+            {/* --- UI FITUR CATATAN CEPAT (UNTUK SCREENSHOT) --- */}
+            <div className="fixed bottom-8 right-8 z-50 flex flex-col items-end animate-fade-in">
+                {isNoteOpen && (
+                    <div className="bg-white border border-slate-200 shadow-2xl rounded-2xl p-4 mb-4 w-72 transition-all">
+                        <div className="flex justify-between items-center mb-2">
+                            <h4 className="font-bold text-slate-800 text-sm">Catatan Admin</h4>
+                            <span className="text-[10px] bg-slate-100 text-slate-500 px-2 py-1 rounded-full font-black tracking-widest">
+                                BUKA: {timer} DETIK
+                            </span>
+                        </div>
+                        <textarea
+                            ref={noteAreaRef}
+                            className="w-full bg-slate-50 border-none rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary/20 outline-none resize-none h-32 text-slate-700"
+                            placeholder="Ketik catatan di sini..."
+                            value={noteText}
+                            onChange={(e) => setNoteText(e.target.value)}
+                        />
+                    </div>
+                )}
+                <button
+                    onClick={() => setIsNoteOpen(!isNoteOpen)}
+                    className="flex items-center gap-2 bg-indigo-900 text-white px-5 py-3 rounded-full font-bold shadow-lg shadow-indigo-900/30 hover:bg-indigo-800 transition-all active:scale-95"
+                >
+                    <span className="text-xl">📝</span>
+                    {isNoteOpen ? "Tutup Catatan" : "Buka Catatan"}
+                </button>
+            </div>
+            {/* ------------------------------------------------- */}
+
         </div>
     )
 
