@@ -135,8 +135,8 @@ export default function Produk() {
             {/* Header Section */}
             <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
                 <div>
-                    <h1 className="text-2xl font-black text-indigo-950 tracking-tight">Manajemen Inventori</h1>
-                    <p className="text-slate-500 text-sm font-medium mt-1">Kelola stok obat dan alat kesehatan Anda secara efisien.</p>
+                    <h1 className="text-2xl font-black text-indigo-950 tracking-tight">Daftar Obat</h1>
+                    <p className="text-slate-500 text-sm font-medium mt-1">Kelola daftar obat dan stok obat apotek Anda secara efisien.</p>
                 </div>
 
                 {/* Dialog Component for adding new products */}
@@ -144,7 +144,7 @@ export default function Produk() {
                     <DialogTrigger asChild>
                         <button className="flex items-center justify-center gap-2 bg-primary text-white px-6 py-3 rounded-2xl font-bold shadow-lg shadow-primary/20 hover:bg-indigo-700 transition-all active:scale-[0.98]">
                             <FiPlus size={20} />
-                            <span>Tambah Produk</span>
+                            <span>Tambah Obat</span>
                         </button>
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-[480px] p-6 rounded-3xl bg-white border border-slate-100 shadow-2xl">

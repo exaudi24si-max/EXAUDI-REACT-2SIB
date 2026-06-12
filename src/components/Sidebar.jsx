@@ -53,11 +53,11 @@ export default function Sidebar() {
                 />
                 
                 <NavItem to="/master" icon={<FiLayers size={22} />} label="Data Master" hasSub>
-                    <Link to="/orders" className="block py-2 pl-12 pr-4 text-xs font-bold text-slate-400 hover:text-slate-600 transition-all">
+                    <Link to="/products" className={`block py-2 pl-12 pr-4 text-xs font-bold transition-all ${location.pathname === "/products" ? "text-primary" : "text-slate-400 hover:text-slate-600"}`}>
                         Daftar Obat
                     </Link>
-                    <Link to="/products" className={`block py-2 pl-12 pr-4 text-xs font-bold transition-all ${location.pathname === "/products" ? "text-primary" : "text-slate-400 hover:text-slate-600"}`}>
-                        Daftar Produk (Baru)
+                    <Link to="/orders" className={`block py-2 pl-12 pr-4 text-xs font-bold transition-all ${location.pathname === "/orders" ? "text-primary" : "text-slate-400 hover:text-slate-600"}`}>
+                        Pesanan Obat
                     </Link>
                     <Link to="/customers" className="block py-2 pl-12 pr-4 text-xs font-bold text-slate-400 hover:text-slate-600 transition-all">
                         Data Pasien
