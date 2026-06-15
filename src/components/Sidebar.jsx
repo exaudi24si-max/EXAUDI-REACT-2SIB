@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { FiHome, FiLayers, FiGrid, FiShoppingBag, FiLock, FiChevronDown, FiLogOut, FiPlusSquare, FiUsers, FiActivity, FiPackage } from "react-icons/fi";
+import { FiHome, FiLayers, FiGrid, FiShoppingBag, FiLock, FiChevronDown, FiLogOut, FiPlusSquare, FiUsers, FiActivity, FiPackage, FiPercent } from "react-icons/fi";
 
 export default function Sidebar() {
     const location = useLocation();
@@ -61,6 +61,15 @@ export default function Sidebar() {
                     </Link>
                     <Link to="/customers" className="block py-2 pl-12 pr-4 text-xs font-bold text-slate-400 hover:text-slate-600 transition-all">
                         Data Pasien
+                    </Link>
+                </NavItem>
+
+                <NavItem to="/crm/admin" icon={<FiPercent size={22} />} label="CRM" hasSub active={location.pathname.startsWith('/crm')}>
+                    <Link to="/crm/admin" className={`block py-2 pl-12 pr-4 text-xs font-bold transition-all ${location.pathname === "/crm/admin" ? "text-primary" : "text-slate-400 hover:text-slate-600"}`}>
+                        Admin CRM
+                    </Link>
+                    <Link to="/crm/member" className={`block py-2 pl-12 pr-4 text-xs font-bold transition-all ${location.pathname === "/crm/member" ? "text-primary" : "text-slate-400 hover:text-slate-600"}`}>
+                        Portal Member
                     </Link>
                 </NavItem>
 
