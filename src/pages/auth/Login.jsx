@@ -3,11 +3,13 @@ import { useNavigate, Link } from "react-router-dom";
 import { FiMail, FiLock, FiAlertCircle } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
+import { authAPI } from "../../services/authAPI";
 
 export default function Login() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+    const [success, setSuccess] = useState("");
     const [dataForm, setDataForm] = useState({
         email: "",
         password: "",
@@ -25,17 +27,32 @@ export default function Login() {
         e.preventDefault();
         setLoading(true);
         setError("");
+        setSuccess("");
 
-        // Simulated login for now
-        setTimeout(() => {
-            if (dataForm.email === "admin" && dataForm.password === "admin") {
+        try {
+            // First check if email/username is 'admin' (hardcoded dummy check as requested to be removed but we can leave a backdoor or entirely use Supabase)
+            // The instructions said "Pastikan proses Login tidak lagi menggunakan dummy json, melainkan langsung ke Supabase"
+            
+            const users = await authAPI.loginUser(dataForm.email, dataForm.password);
+
+            if (users && users.length > 0) {
+                // Login berhasil
+                const user = users[0];
                 localStorage.setItem("isAuthenticated", "true");
-                navigate("/");
+                localStorage.setItem("user", JSON.stringify(user));
+                setSuccess("Login berhasil! Mengalihkan...");
+                
+                setTimeout(() => {
+                    navigate("/");
+                }, 1500);
             } else {
-                setError("Invalid username or password (use admin/admin)");
+                setError("Email atau password tidak valid.");
             }
+        } catch (err) {
+            setError(`Terjadi kesalahan: ${err.message}`);
+        } finally {
             setLoading(false);
-        }, 1500);
+        }
     };
 
     return (
@@ -51,6 +68,12 @@ export default function Login() {
                     {error}
                 </div>
             )}
+            
+            {success && (
+                <div className="bg-emerald-50 text-emerald-600 p-4 rounded-2xl text-xs font-bold border border-emerald-100 flex items-center gap-3">
+                    {success}
+                </div>
+            )}
 
             <form onSubmit={handleSubmit} className="space-y-5">
                 <div className="space-y-2">
@@ -60,7 +83,7 @@ export default function Login() {
                             <FiMail className="text-slate-300 group-focus-within:text-primary transition-colors" />
                         </div>
                         <input
-                            type="text"
+                            type="email"
                             name="email"
                             className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all text-sm font-bold"
                             placeholder="Enter your email"
@@ -132,4 +155,3 @@ export default function Login() {
         </div>
     );
 }
-

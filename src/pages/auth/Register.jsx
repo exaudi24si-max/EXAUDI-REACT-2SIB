@@ -2,11 +2,13 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { FiUser, FiMail, FiLock, FiAlertCircle } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
+import { authAPI } from "../../services/authAPI";
 
 export default function Register() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+    const [success, setSuccess] = useState("");
     const [dataForm, setDataForm] = useState({
         fullName: "",
         email: "",
@@ -25,13 +27,34 @@ export default function Register() {
         e.preventDefault();
         setLoading(true);
         setError("");
+        setSuccess("");
 
-        // Simulated registration
-        setTimeout(() => {
-            localStorage.setItem("isAuthenticated", "true");
-            navigate("/");
+        try {
+            // Check if email already exists
+            const existingUser = await authAPI.checkEmail(dataForm.email);
+            if (existingUser.length > 0) {
+                setError("Email sudah terdaftar!");
+                setLoading(false);
+                return;
+            }
+
+            // Register user
+            await authAPI.registerUser({
+                full_name: dataForm.fullName,
+                email: dataForm.email,
+                password: dataForm.password
+            });
+
+            setSuccess("Pendaftaran berhasil! Silahkan login.");
+            setTimeout(() => {
+                navigate("/login");
+            }, 2000);
+            
+        } catch (err) {
+            setError(`Terjadi kesalahan: ${err.message}`);
+        } finally {
             setLoading(false);
-        }, 1500);
+        }
     };
 
     return (
@@ -45,6 +68,12 @@ export default function Register() {
                 <div className="bg-rose-50 text-rose-600 p-4 rounded-2xl text-xs font-bold border border-rose-100 flex items-center gap-3 animate-shake">
                     <FiAlertCircle size={18} />
                     {error}
+                </div>
+            )}
+            
+            {success && (
+                <div className="bg-emerald-50 text-emerald-600 p-4 rounded-2xl text-xs font-bold border border-emerald-100 flex items-center gap-3">
+                    {success}
                 </div>
             )}
 
