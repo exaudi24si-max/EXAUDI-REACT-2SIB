@@ -2,6 +2,7 @@ import React, { Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import MainLayout from './layouts/MainLayout';
 import AuthLayout from './layouts/AuthLayout';
+import MemberLayout from './layouts/MemberLayout';
 import Loading from './components/Loading';
 
 // Lazy loading pages
@@ -18,6 +19,7 @@ const ProductDetail = React.lazy(() => import("./pages/ProductDetail"));
 const Components = React.lazy(() => import("./pages/Components"));
 const CrmAdmin = React.lazy(() => import("./pages/CrmAdmin"));
 const CrmMember = React.lazy(() => import("./pages/CrmMember"));
+const LandingPage = React.lazy(() => import("./pages/LandingPage"));
 
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -25,20 +27,27 @@ function App() {
   return (
     <Suspense fallback={<Loading />}>
       <Routes>
+        {/* Public Guest Route */}
+        <Route path="/" element={<LandingPage />} />
+
         {/* Protected Routes */}
         <Route element={<ProtectedRoute />}>
           <Route element={<MainLayout />}>
-            <Route path="/" element={<Dashboard />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/orders" element={<Orders />} />
             <Route path="/customers" element={<Customers />} />
             <Route path="/products" element={<Produk />} />
             <Route path="/products/:id" element={<ProductDetail />} />
             <Route path="/crm/admin" element={<CrmAdmin />} />
-            <Route path="/crm/member" element={<CrmMember />} />
             <Route path="/components" element={<Components />} />
             <Route path="/error-400" element={<ErrorPage code={400} />} />
             <Route path="/error-401" element={<ErrorPage code={401} />} />
             <Route path="/error-403" element={<ErrorPage code={403} />} />
+          </Route>
+
+          {/* Member Layout (No Sidebar) */}
+          <Route element={<MemberLayout />}>
+            <Route path="/crm/member" element={<CrmMember />} />
           </Route>
         </Route>
 
@@ -57,5 +66,4 @@ function App() {
   );
 }
 
-
-export default App;
+export default App;

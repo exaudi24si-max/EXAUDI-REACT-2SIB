@@ -43,7 +43,13 @@ export default function Login() {
                 setSuccess("Login berhasil! Mengalihkan...");
                 
                 setTimeout(() => {
-                    navigate("/");
+                    // Cek role user, jika member arahkan ke halaman member, jika admin ke dashboard
+                    if (user.role === "member") {
+                        navigate("/crm/member");
+                    } else {
+                        // Default admin atau role lain ke dashboard
+                        navigate("/dashboard");
+                    }
                 }, 1500);
             } else {
                 setError("Email atau password tidak valid.");

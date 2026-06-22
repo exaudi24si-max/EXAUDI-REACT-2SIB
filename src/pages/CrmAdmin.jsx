@@ -1,8 +1,27 @@
+import { useState, useEffect } from 'react';
 import { crmSummary, crmCustomers, crmVouchers, crmMemberLevels, crmReminders } from '../data/crmData';
-import { FiTrendingUp, FiUsers, FiGift, FiBell, FiPercent, FiCreditCard } from 'react-icons/fi';
+import { FiTrendingUp, FiUsers, FiGift, FiBell, FiPercent, FiCreditCard, FiMessageSquare, FiStar } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
+import { feedbackAPI } from '../services/authAPI';
 
 export default function CrmAdmin() {
+  const [feedbacks, setFeedbacks] = useState([]);
+  const [loadingFeedbacks, setLoadingFeedbacks] = useState(true);
+
+  useEffect(() => {
+    const fetchFeedbacks = async () => {
+      try {
+        const data = await feedbackAPI.getFeedbacks();
+        setFeedbacks(data);
+      } catch (error) {
+        console.error("Gagal mengambil feedback", error);
+      } finally {
+        setLoadingFeedbacks(false);
+      }
+    };
+    fetchFeedbacks();
+  }, []);
+
   return (
     <div className="space-y-8 pb-10 animate-fade-in">
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
@@ -92,6 +111,45 @@ export default function CrmAdmin() {
             </tbody>
           </table>
         </div>
+      </Panel>
+
+      {/* Feedback Panel */}
+      <Panel title="Feedback Member" badge="Masukan & Rating">
+        {loadingFeedbacks ? (
+          <p className="text-slate-500 text-sm">Memuat feedback...</p>
+        ) : feedbacks.length === 0 ? (
+          <div className="text-center py-10 rounded-2xl bg-slate-50 border border-slate-100">
+            <FiMessageSquare size={32} className="text-slate-300 mx-auto mb-3" />
+            <p className="text-slate-500 text-sm font-medium">Belum ada feedback dari member.</p>
+          </div>
+        ) : (
+          <div className="grid gap-4 md:grid-cols-2">
+            {feedbacks.map((item) => (
+              <div key={item.id} className="rounded-2xl border border-slate-100 bg-slate-50 p-5 hover:bg-white hover:shadow-lg transition-all">
+                <div className="flex items-center justify-between gap-4 mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-indigo-100 text-primary flex items-center justify-center font-black">
+                      {item.user_name ? item.user_name.charAt(0).toUpperCase() : '?'}
+                    </div>
+                    <div>
+                      <p className="font-bold text-slate-900">{item.user_name || 'Anonim'}</p>
+                      <p className="text-[10px] text-slate-500 font-medium">{new Date(item.created_at).toLocaleString('id-ID')}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1 text-yellow-500">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <FiStar key={i} size={14} className={i < item.rating ? 'fill-current' : 'text-slate-300'} />
+                    ))}
+                  </div>
+                </div>
+                <div className="bg-white p-4 rounded-xl border border-slate-100 shadow-sm relative">
+                  <div className="absolute -top-2 left-6 w-4 h-4 bg-white border-t border-l border-slate-100 transform rotate-45"></div>
+                  <p className="text-sm text-slate-700 relative z-10">{item.message}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </Panel>
     </div>
   );

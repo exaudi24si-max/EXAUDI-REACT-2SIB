@@ -42,7 +42,8 @@ export default function Register() {
             await authAPI.registerUser({
                 full_name: dataForm.fullName,
                 email: dataForm.email,
-                password: dataForm.password
+                password: dataForm.password,
+                role: "member"
             });
 
             setSuccess("Pendaftaran berhasil! Silahkan login.");

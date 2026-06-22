@@ -6,9 +6,37 @@ export default function Sidebar() {
     const location = useLocation();
     const navigate = useNavigate();
     
+    // Get user data from localStorage
+    const userStr = localStorage.getItem("user");
+    const user = userStr ? JSON.parse(userStr) : null;
+    const userName = user?.full_name || "Admin Apotek";
+    const userRole = user?.role === "admin" ? "Administrator" : "Apoteker";
+    const userSeed = userName.replace(/\s+/g, '');
+    
+    // State untuk foto profil (mengambil dari localStorage jika ada, jika tidak pakai default dicebear)
+    const [avatarUrl, setAvatarUrl] = useState(localStorage.getItem(`avatar_${user?.id}`) || `https://api.dicebear.com/7.x/avataaars/svg?seed=${userSeed}`);
+
+    // Fungsi untuk menangani perubahan foto profil
+    const handleAvatarChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                const base64String = reader.result;
+                setAvatarUrl(base64String);
+                // Simpan foto profil dalam bentuk base64 ke localStorage berdasarkan ID user
+                if (user?.id) {
+                    localStorage.setItem(`avatar_${user.id}`, base64String);
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+    
     const handleLogout = () => {
         localStorage.removeItem("isAuthenticated");
-        navigate("/auth");
+        localStorage.removeItem("user");
+        navigate("/");
     };
 
     return (
@@ -31,13 +59,13 @@ export default function Sidebar() {
             {/* Navigation */}
             <nav className="flex-1 px-4 py-2 space-y-2 overflow-y-auto scrollbar-hide">
                 <NavItem 
-                    to="/" 
+                    to="/dashboard" 
                     icon={<FiHome size={22} />} 
                     label="Utama" 
-                    active={location.pathname === "/"} 
+                    active={location.pathname === "/dashboard"} 
                     hasSub 
                 >
-                    <Link to="/" className={`block py-2 pl-12 pr-4 text-xs font-bold transition-all ${location.pathname === "/" ? "text-primary" : "text-slate-400 hover:text-slate-600"}`}>
+                    <Link to="/dashboard" className={`block py-2 pl-12 pr-4 text-xs font-bold transition-all ${location.pathname === "/dashboard" ? "text-primary" : "text-slate-400 hover:text-slate-600"}`}>
                         Dashboard
                     </Link>
                     <Link to="/analytics" className="block py-2 pl-12 pr-4 text-xs font-bold text-slate-400 hover:text-slate-600 transition-all">
@@ -96,17 +124,31 @@ export default function Sidebar() {
             
             {/* Profile Section & Logout */}
             <div className="p-6 space-y-4">
-                <div className="flex items-center gap-4 p-3 bg-slate-50 rounded-2xl border border-slate-100 cursor-pointer group hover:bg-slate-100 transition-all">
-                    <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center overflow-hidden border border-primary/20">
+                <div className="flex items-center gap-4 p-3 bg-slate-50 rounded-2xl border border-slate-100 group hover:bg-slate-100 transition-all">
+                    <input 
+                        type="file" 
+                        accept="image/*" 
+                        className="hidden" 
+                        id="avatar-upload" 
+                        onChange={handleAvatarChange}
+                    />
+                    <label 
+                        htmlFor="avatar-upload" 
+                        className="relative w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center overflow-hidden border border-primary/20 cursor-pointer group/avatar"
+                        title="Klik untuk ganti foto profil"
+                    >
                         <img 
-                            src="https://api.dicebear.com/7.x/avataaars/svg?seed=Anita" 
+                            src={avatarUrl} 
                             alt="Avatar" 
                             className="w-full h-full object-cover"
                         />
-                    </div>
+                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover/avatar:opacity-100 transition-opacity">
+                            <FiPlusSquare size={16} className="text-white" />
+                        </div>
+                    </label>
                     <div className="flex-1 min-w-0">
-                        <p className="text-sm font-bold text-slate-900 truncate">Anita Cruz</p>
-                        <p className="text-[10px] text-slate-500 font-medium truncate">Apoteker Penanggung Jawab</p>
+                        <p className="text-sm font-bold text-slate-900 truncate">{userName}</p>
+                        <p className="text-[10px] text-slate-500 font-medium truncate capitalize">{userRole}</p>
                     </div>
                 </div>
 
