@@ -1,8 +1,44 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { FiHeart, FiGift, FiBell, FiStar, FiShield, FiArrowRight, FiShoppingBag } from 'react-icons/fi';
+import { FiHeart, FiGift, FiBell, FiStar, FiShield, FiArrowRight, FiShoppingBag, FiInstagram, FiGithub, FiUser } from 'react-icons/fi';
 
 export default function LandingPage() {
+  const [promo, setPromo] = useState(null);
+  const [timeLeft, setTimeLeft] = useState("");
+
+  useEffect(() => {
+    const checkPromo = () => {
+      const saved = localStorage.getItem("promoDiskon");
+      if (saved) {
+        try {
+          const data = JSON.parse(saved);
+          if (data.validUntil) {
+            const endDate = new Date(data.validUntil).getTime();
+            const now = new Date().getTime();
+            const distance = endDate - now;
+            
+            if (distance > 0) {
+              setPromo(data);
+              
+              const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+              const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+              const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+              const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+              
+              setTimeLeft(`${days}h ${hours}j ${minutes}m ${seconds}s`);
+            } else {
+              setPromo(null);
+            }
+          }
+        } catch(e) {}
+      }
+    };
+    
+    checkPromo();
+    const interval = setInterval(checkPromo, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="min-h-screen bg-slate-50 font-sans selection:bg-primary selection:text-white">
       {/* Navigation */}
@@ -48,9 +84,6 @@ export default function LandingPage() {
               <Link to="/auth" className="inline-flex justify-center items-center gap-2 px-8 py-4 bg-primary text-white font-bold rounded-2xl shadow-xl shadow-primary/30 hover:bg-indigo-700 transition-all hover:scale-105">
                 Mulai Sekarang <FiArrowRight />
               </Link>
-              <Link to="/dashboard" className="inline-flex justify-center items-center gap-2 px-8 py-4 bg-white text-indigo-950 font-bold rounded-2xl shadow-sm border border-slate-200 hover:border-primary/30 hover:bg-slate-50 transition-all">
-                Lihat Demo Dashboard
-              </Link>
             </div>
           </div>
           <div className="relative">
@@ -76,6 +109,32 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Promo Banner */}
+      {promo && (
+        <section className="py-6 px-6 bg-gradient-to-r from-rose-500 to-pink-500 text-white shadow-inner">
+          <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                <FiGift size={24} className="text-white animate-bounce" />
+              </div>
+              <div>
+                <h3 className="text-xl font-black">{promo.title}</h3>
+                <p className="text-pink-100 text-sm">
+                  Dapatkan <span className="font-bold text-white">{promo.product}</span> dengan diskon <span className="font-bold text-white">{promo.discount}</span>!
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3 bg-white/10 px-5 py-3 rounded-2xl backdrop-blur-md border border-white/20">
+              <FiBell className="text-pink-200 animate-pulse" />
+              <div className="text-sm">
+                <span className="text-pink-100 block text-[10px] font-bold uppercase tracking-widest">Berakhir Dalam</span>
+                <span className="font-black text-lg font-mono tracking-wider">{timeLeft}</span>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Featured Products */}
       <section className="py-20 px-6 bg-white">
         <div className="max-w-7xl mx-auto">
@@ -84,7 +143,7 @@ export default function LandingPage() {
               <h2 className="text-3xl lg:text-5xl font-black text-indigo-950 tracking-tight">Pilihan Terlaris</h2>
               <p className="text-slate-500 max-w-xl">Berbagai produk kesehatan dan vitamin pilihan yang paling banyak dicari oleh pelanggan kami.</p>
             </div>
-            <Link to="/auth" className="inline-flex items-center gap-2 text-sm font-bold text-primary hover:text-indigo-700 transition-colors">
+            <Link to="/katalog" className="inline-flex items-center gap-2 text-sm font-bold text-primary hover:text-indigo-700 transition-colors">
               Lihat Semua Produk <FiArrowRight />
             </Link>
           </div>
@@ -192,11 +251,19 @@ export default function LandingPage() {
       {/* Footer */}
       <footer className="bg-white border-t border-slate-100 py-12 px-6">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <FiHeart size={16} className="text-white" />
+          <div className="flex flex-col md:flex-row items-center gap-6">
+            <div className="flex items-center gap-2 text-slate-600">
+              <FiUser className="text-primary" />
+              <span className="font-medium text-sm">Exaudi banjarnahor</span>
             </div>
-            <span className="font-black text-indigo-950">ApotekPro</span>
+            <div className="flex items-center gap-2 text-slate-600">
+              <FiInstagram className="text-rose-500" />
+              <a href="https://instagram.com/exaudibanjarnahor" target="_blank" rel="noopener noreferrer" className="font-medium text-sm hover:text-primary transition-colors">@exaudibanjarnahor</a>
+            </div>
+            <div className="flex items-center gap-2 text-slate-600">
+              <FiGithub className="text-slate-800" />
+              <a href="https://github.com/exapcr" target="_blank" rel="noopener noreferrer" className="font-medium text-sm hover:text-primary transition-colors">exapcr</a>
+            </div>
           </div>
           <p className="text-sm text-slate-400 font-medium">© 2026 ApotekPro. All rights reserved.</p>
         </div>

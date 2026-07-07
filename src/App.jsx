@@ -20,6 +20,7 @@ const Components = React.lazy(() => import("./pages/Components"));
 const CrmAdmin = React.lazy(() => import("./pages/CrmAdmin"));
 const CrmMember = React.lazy(() => import("./pages/CrmMember"));
 const LandingPage = React.lazy(() => import("./pages/LandingPage"));
+const PublicKatalog = React.lazy(() => import("./pages/PublicKatalog"));
 
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -29,6 +30,7 @@ function App() {
       <Routes>
         {/* Public Guest Route */}
         <Route path="/" element={<LandingPage />} />
+        <Route path="/katalog" element={<PublicKatalog />} />
 
         {/* Protected Routes */}
         <Route element={<ProtectedRoute />}>

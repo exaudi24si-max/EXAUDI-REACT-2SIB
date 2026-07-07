@@ -8,6 +8,28 @@ export default function CrmAdmin() {
   const [feedbacks, setFeedbacks] = useState([]);
   const [loadingFeedbacks, setLoadingFeedbacks] = useState(true);
 
+  const [promoForm, setPromoForm] = useState({
+    title: "Promo Flash Sale",
+    product: "Blackmores Vitamin C",
+    discount: "30%",
+    validUntil: ""
+  });
+
+  useEffect(() => {
+    const saved = localStorage.getItem("promoDiskon");
+    if (saved) {
+      try {
+        setPromoForm(JSON.parse(saved));
+      } catch(e){}
+    }
+  }, []);
+
+  const handleSavePromo = (e) => {
+    e.preventDefault();
+    localStorage.setItem("promoDiskon", JSON.stringify(promoForm));
+    alert("Promo berhasil disimpan!");
+  };
+
   useEffect(() => {
     const fetchFeedbacks = async () => {
       try {
@@ -150,6 +172,57 @@ export default function CrmAdmin() {
             ))}
           </div>
         )}
+      </Panel>
+
+      {/* Promo Settings Panel */}
+      <Panel title="Pengaturan Promo Diskon (Halaman Guest)" badge="CRM Promo Aktif">
+        <form onSubmit={handleSavePromo} className="space-y-4 max-w-lg">
+          <div>
+            <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Judul Promo</label>
+            <input 
+              type="text" 
+              className="mt-1 w-full rounded-xl border border-slate-200 p-3 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+              value={promoForm.title}
+              onChange={(e) => setPromoForm({...promoForm, title: e.target.value})}
+              required
+            />
+          </div>
+          <div>
+            <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Nama Produk Diskon</label>
+            <input 
+              type="text" 
+              className="mt-1 w-full rounded-xl border border-slate-200 p-3 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+              value={promoForm.product}
+              onChange={(e) => setPromoForm({...promoForm, product: e.target.value})}
+              required
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Diskon</label>
+              <input 
+                type="text" 
+                className="mt-1 w-full rounded-xl border border-slate-200 p-3 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                value={promoForm.discount}
+                onChange={(e) => setPromoForm({...promoForm, discount: e.target.value})}
+                required
+              />
+            </div>
+            <div>
+              <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Berlaku Sampai</label>
+              <input 
+                type="datetime-local" 
+                className="mt-1 w-full rounded-xl border border-slate-200 p-3 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                value={promoForm.validUntil}
+                onChange={(e) => setPromoForm({...promoForm, validUntil: e.target.value})}
+                required
+              />
+            </div>
+          </div>
+          <button type="submit" className="w-full bg-primary hover:bg-indigo-700 text-white font-bold py-3 rounded-xl transition-all shadow-lg shadow-primary/20 mt-4">
+            Simpan Promo
+          </button>
+        </form>
       </Panel>
     </div>
   );
